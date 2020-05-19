@@ -1,32 +1,54 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <LayoutNotification />
+    <BaseSpinner />
+    <div class="container-fluid " v-if="isLogged">
+      <div class="row">
+        <div class="col-6 col-sm-3 col-md-3 navigation-sidebar">
+          <h2 class="text-center mt-3 mb-3">{{ appTitle }}</h2>
+          <LayoutNavigation />
+        </div>
+        <div class="col">
+          <router-view />
+        </div>
+      </div>
     </div>
-    <router-view/>
+    <router-view v-if="!isLogged" />
   </div>
 </template>
 
+<script>
+import BaseSpinner from '@/components/global/BaseSpinner'
+import LayoutNavigation from '@/components/layout/LayoutNavigation'
+import LayoutNotification from '@/components/layout/LayoutNotification'
+export default {
+  name: 'App',
+  components: {
+    BaseSpinner,
+    LayoutNavigation,
+    LayoutNotification,
+  },
+  data: () => ({ isLogged: false, appTitle: 'Balance' }),
+  mounted() {
+    this.$firebase.auth().onAuthStateChanged(user => {
+      this.isLogged = !!user
+      if (user) {
+        localStorage.uid = user.uid
+      }
+    })
+    setTimeout(() => this.$root.$emit('Spinner::toogle'), 500)
+  },
+}
+</script>
+
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+  min-height: 100vh;
+  color: var(--light);
+  background-color: var(--darker);
+  .navigation-sidebar {
+    background-color: var(--dark-medium);
+    padding: 0;
   }
 }
 </style>

@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
+@import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
+
+@import 'reset';
+@import 'variables';
+
+* {
+    font-family: 'Poppins', 'Menlo', sans-serif;
+}
+
+.btn,
+.card,
+.alert,
+.form-control,
+.modal,
+.modal-content {
+    border-radius: 0 !important;
+}
+
+.btn-primary {
+    background-color: $featured;
+    border-color: $featured-dark;
+
+    &:hover {
+        border-color: $featured-dark;
+    }
+}
